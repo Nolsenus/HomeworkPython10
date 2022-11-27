@@ -1,8 +1,8 @@
 import re
 from pathlib import Path
-
 import telebot
 from telebot.types import InputFile
+
 from logger import log, log_return
 from phones_db import init
 from phones_db import add
@@ -11,7 +11,7 @@ from phones_db import update
 from phones_db import lookup
 from phones_db import table_as_list_of_tuples
 
-API_TOKEN = '5735432738:AAEFavJj4lXZytjt-PuioVvTcsKH1dKfZis'
+API_TOKEN = 'YOUR TOKEN HERE'
 
 bot = telebot.TeleBot(API_TOKEN)
 
@@ -27,7 +27,13 @@ def show_commands(message):
     log(f'В чате {message.chat.id} вызвана команда /help.')
     bot.send_message(message.chat.id, '/help - Вывод списка команд.\n'
                                       '/info <команда> - Вывод подробной информации о команде.\n'
-                                      '/symbols - Пояснение специальных символов (<>...)')
+                                      '/symbols - Пояснение специальных символов (<>...)\n'
+                                      '/add - Добавление записи в базу данных.\n'
+                                      '/remove - Удаление записей из базы данных.\n'
+                                      '/search - Поиск записей по базе данных.\n'
+                                      '/update - Обновление записи в базе данных.\n'
+                                      '/show - Вывод данных из базы данных.\n'
+                                      '/export - Отправка .db файла, содержащего базу данных.')
 
 
 @bot.message_handler(commands=['symbols'])
@@ -357,10 +363,6 @@ def launch():
     Path("./phone_databases").mkdir(exist_ok=True)
     log('Бот запущен.')
     bot.polling()
-
-
-def test():
-    print(lookup('./phone_databases/520093936.db', [], 'contacts', ['ROWID=12']))
 
 
 if __name__ == '__main__':
